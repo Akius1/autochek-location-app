@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { LocationService } from './location.service';
 // import { LocationDto } from './location.dto';
 import { LocationI } from './models/location.interface';
@@ -18,7 +19,7 @@ export class LocationController {
   constructor(private locationService: LocationService) {}
 
   @Get()
-  async getLocations() {
+  getLocations(): Observable<LocationI[]> {
     return this.locationService.getLocations();
   }
   @Post()
@@ -26,21 +27,18 @@ export class LocationController {
     return this.locationService.createLocations(newLocation);
   }
   @Get(':id')
-  async getLocationsById(@Param('id') id: number) {
-    return await this.locationService.getLocationsById(id);
+  getLocationsById(@Param('id') id: number): Observable<LocationI> {
+    return this.locationService.getLocationsById(id);
   }
   @Put(':id')
-  async editLocationsById(@Param('id') id: number, @Query() query) {
-    const propertyName = query.property_name;
-    const propertyValue = query.property_value;
-    return await this.locationService.editLocationsById(
-      id,
-      propertyName,
-      propertyValue,
-    );
+  editLocationsById(
+    @Param('id') id: number,
+    @Body() updatedLocation: LocationI,
+  ): Observable<UpdateResult> {
+    return this.locationService.editLocationsById(id, updatedLocation);
   }
   @Delete(':id')
-  async deleteLocationsById(@Param('id') id: number) {
-    return await this.locationService.deleteLocationsById(id);
+  deleteLocationsById(@Param('id') id: number): Observable<DeleteResult> {
+    return this.locationService.deleteLocationsById(id);
   }
 }
