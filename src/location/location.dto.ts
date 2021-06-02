@@ -5,5 +5,6 @@ export class LocationDto {
   readonly website: string;
   readonly phone: string;
   readonly contactPerson: string;
-  readonly coordinates: string;
+  readonly coordinates: number;
+  readonly createdAt?: Date;
 }
