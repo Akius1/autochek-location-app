@@ -33,7 +33,25 @@ export class LocationService {
   public deleteLocationsById(id: number): Observable<DeleteResult> {
     return from(this.locationRepository.delete(id));
   }
-  public async calculateDistance() {
-    return {};
+  public calculateDistance(
+    id: number,
+    locationOne: string,
+    locationTwo: string,
+  ) {
+    const allData: any = from(this.locationRepository.find());
+
+    const filtered: any = allData.filter((data) => {
+      return data.name == locationOne || data.name == locationTwo;
+    });
+
+    const lagA = filtered[0].coordinates;
+    const lagB = filtered[1].coordinates;
+
+    function sumLocation(a: number, b: number) {
+      return a + b;
+    }
+    const result: number = sumLocation(lagA, lagB);
+    console.log(result);
+    return result;
   }
 }

@@ -11,7 +11,6 @@ import {
 import { Observable } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { LocationService } from './location.service';
-// import { LocationDto } from './location.dto';
 import { LocationI } from './models/location.interface';
 
 @Controller('location')
@@ -40,5 +39,16 @@ export class LocationController {
   @Delete(':id')
   deleteLocationsById(@Param('id') id: number): Observable<DeleteResult> {
     return this.locationService.deleteLocationsById(id);
+  }
+
+  @Get('/:id')
+  calculateLocation(@Param() id: number, @Query() query): any {
+    const fromLoccation = query.name;
+    const toLocation = query.name;
+    return this.locationService.calculateDistance(
+      id,
+      fromLoccation,
+      toLocation,
+    );
   }
 }
